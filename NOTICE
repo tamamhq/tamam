@@ -4,4 +4,7 @@ Copyright (c) 2026 The Tamam authors. Licensed under the MIT License (see LICENS
 This project includes UI components adapted from shadcn/ui
 (https://github.com/shadcn-ui/ui), Copyright (c) 2023 shadcn, MIT License.
 
+The Tamam logo's hand is adapted from Microsoft Fluent Emoji
+(https://github.com/microsoft/fluentui-emoji), Copyright (c) Microsoft Corporation, MIT License.
+
 Dependencies installed by uv and npm keep their own licenses.

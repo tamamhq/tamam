@@ -1,7 +1,7 @@
 [project]
 name = "tamam"
 version = "0.1.0"
-description = "Harness-first AI QA: deterministic checks before LLM judge, swappable executors"
+description = "The AI QA tester that proves every pass: plain-English iOS tests on simulators, real devices and device farms"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.115",

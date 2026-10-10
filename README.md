@@ -1,6 +1,18 @@
-# Tamam
+<h1 align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-header-dark.svg">
+    <img alt="Tamam: the AI QA tester that proves every pass" src="docs/assets/readme-header-light.svg" width="640">
+  </picture>
+</h1>
 
-**The AI QA tester that proves every pass.**
+<p align="center">
+  <a href="https://github.com/tamamhq/tamam/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/tamamhq/tamam/actions/workflows/ci.yml/badge.svg"></a>
+  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-0F5257"></a>
+  <img alt="Platform: iOS" src="https://img.shields.io/badge/platform-iOS-0F5257">
+  <img alt="Android and web: coming soon" src="https://img.shields.io/badge/Android%20%26%20web-coming%20soon-lightgrey">
+</p>
+
+<p align="center"><b>Tamam</b> (<i>tah-MAHM</i>) is Arabic for “all good”, what you say when a check passes. 👌</p>
 
 Write a test in plain English. Tamam runs it on an iOS simulator, a real iPhone or a device
 farm (AWS Device Farm, BrowserStack, LambdaTest, Sauce Labs) the way a person would — and says
