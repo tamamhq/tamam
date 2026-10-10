@@ -1,0 +1,63 @@
+# Caddy serves the built SPA and proxies /api to the backend over the hosting platform's
+# private network. the hosting platform terminates TLS at its edge, so we serve plain HTTP
+# on $PORT here.
+#
+# Required env var on the frontend service:
+#   API_INTERNAL_URL = http://api.internal:8000
+#     (the backend service's PRIVATE address — the API has no public domain)
+{
+	admin off # no admin API surface in the container
+	auto_https off # the hosting platform handles TLS
+}
+
+:{$PORT} {
+	encode gzip
+
+	# ── Security headers on every response ──────────────────────────────
+	# These are the first things an audit checks. Comments explain each.
+	header {
+		# Force HTTPS in the browser for 2 years (the hosting platform is HTTPS at the edge).
+		Strict-Transport-Security "max-age=63072000; includeSubDomains"
+		# Block MIME-type sniffing (defends against content-type confusion).
+		X-Content-Type-Options "nosniff"
+		# Clickjacking defense: only our own origin may put us in a frame.
+		X-Frame-Options "SAMEORIGIN"
+		# Don't leak full URLs (which can contain ids) to third-party sites.
+		Referrer-Policy "strict-origin-when-cross-origin"
+		# Disable powerful browser features we don't use.
+		Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+		# Strip the server fingerprint.
+		-Server
+	}
+
+	# ── API → backend, private network only ─────────────────────────────
+	handle /api/* {
+		reverse_proxy {$API_INTERNAL_URL} {
+			flush_interval -1 # stream Server-Sent Events without buffering
+		}
+	}
+
+	# ── SPA: serve static files, fall back to index.html for client routes ──
+	handle {
+		root * /srv
+		try_files {path} /index.html
+		file_server
+	}
+}
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Content-Security-Policy is intentionally NOT set yet. A wrong CSP silently
+# breaks Clerk (its sign-in scripts/iframes) and the app. Turn it on carefully:
+#   1. First deploy WITHOUT it and confirm sign-in + runs work.
+#   2. Add `Content-Security-Policy-Report-Only "<policy>"` and watch the browser
+#      console for violations while exercising sign-in, runs, SSE, screenshots.
+#   3. Only once clean, switch to `Content-Security-Policy`.
+# A starting policy to tune against Clerk's required domains:
+#   default-src 'self';
+#   script-src 'self' https://*.clerk.accounts.dev https://*.clerk.com;
+#   connect-src 'self' https://*.clerk.accounts.dev https://*.clerk.com;
+#   img-src 'self' data: blob: https:;
+#   style-src 'self' 'unsafe-inline';
+#   frame-src https://*.clerk.accounts.dev https://*.clerk.com;
+#   worker-src 'self' blob:;
+# (Replace *.clerk.accounts.dev with your production Clerk frontend-API domain.)

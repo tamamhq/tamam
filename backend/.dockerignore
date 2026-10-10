@@ -1,0 +1,26 @@
+# Never ship these into the image. The top ones are SECURITY-critical:
+# a leaked .env in a pushed image is a credential breach.
+.env
+.env.*
+*.pem
+*.key
+
+# local virtualenv + caches (rebuilt in the image)
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# runtime data + local artifacts (must not be in the image)
+artifacts/
+*.sqlite
+*.db
+
+# vcs + editor + docs (not needed at runtime)
+.git/
+.gitignore
+.DS_Store
+*.md
+tests/

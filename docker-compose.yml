@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: tamam
+      POSTGRES_PASSWORD: tamam
+      POSTGRES_DB: tamam
+    ports: ["5433:5432"]  # 5433: native Homebrew postgres owns 5432 on many Macs
+    volumes: [pgdata:/var/lib/postgresql/data]
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6380:6379"]  # 6380: native Homebrew redis owns 6379
+
+volumes:
+  pgdata:

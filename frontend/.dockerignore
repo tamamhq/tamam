@@ -1,0 +1,9 @@
+# Keep build context small and free of secrets/local state.
+node_modules/
+dist/
+.env
+.env.*
+.git/
+.gitignore
+.DS_Store
+*.md

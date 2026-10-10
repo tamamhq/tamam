@@ -1,0 +1,69 @@
+[project]
+name = "tamam"
+version = "0.1.0"
+description = "Harness-first AI QA: deterministic checks before LLM judge, swappable executors"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115",
+    "sqlmodel>=0.0.22",
+    "uvicorn[standard]>=0.32",
+    "pydantic>=2.9",
+    "pydantic-settings>=2.6",
+    "pydantic-ai-slim[anthropic]>=0.0.30",
+    "arq>=0.26",
+    "redis>=5.0",
+    "aiosqlite>=0.20",
+    "greenlet>=3.0",
+    "sse-starlette>=2.1",
+    "httpx>=0.27",
+    "alembic>=1.18.5",
+    "pyjwt[crypto]>=2.15",  # verify Clerk session tokens (RS256) against their JWKS; 2.15 fixes 14 advisories
+    "python-multipart>=0.0.9",  # required by FastAPI for the build-upload form route
+    "boto3>=1.43.104",      # S3 storage + Device Farm (>=1.43.104: remote-session `configuration.parameters`, needed to pick Appium 3)
+    # The iOS executor (the product): Appium client, image handling, OCR evidence/grounding.
+    # OCR also needs the `tesseract` binary on PATH (brew install tesseract); it skips cleanly without.
+    "Appium-Python-Client>=4",
+    "pillow>=10",
+    "pytesseract>=0.3",
+]
+
+[project.optional-dependencies]
+ios = []  # kept so `--extra ios` still works; the iOS executor's deps are now core
+observability = [
+    "lmnr>=0.7",
+]
+postgres = [
+    "asyncpg>=0.30",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "pytest-asyncio>=0.24",
+    "ruff>=0.7",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+markers = [
+    "judge_eval: hits the live judge model (costs tokens); opt in with TAMAM_RUN_JUDGE_EVALS=1",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["migrations"]  # alembic-generated; don't fight the generator
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["E702"]  # compact one-line mocks/fixtures are fine in tests
+
+[project.scripts]
+tamam = "tamam.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["tamam"]

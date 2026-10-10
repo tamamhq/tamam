@@ -1,0 +1,7 @@
+Tamam
+Copyright (c) 2026 The Tamam authors. Licensed under the MIT License (see LICENSE).
+
+This project includes UI components adapted from shadcn/ui
+(https://github.com/shadcn-ui/ui), Copyright (c) 2023 shadcn, MIT License.
+
+Dependencies installed by uv and npm keep their own licenses.

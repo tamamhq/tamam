@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.venv/
+*.db
+.env
+artifacts/
+node_modules/
+dist/
+.pytest_cache/
+.ruff_cache/
+
+# per-environment export ledgers (local simulator runs, etc.)
+docs/ledgers/
