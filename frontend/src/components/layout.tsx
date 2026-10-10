@@ -16,7 +16,7 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { OrgSwitcher, UserAvatar } from "@/lib/auth"
 import { useTheme } from "@/lib/theme"
-import { Activity, FolderGit2, Moon, Settings, Sun, Zap } from "lucide-react"
+import { FolderGit2, Moon, Settings, Sun, Zap } from "lucide-react"
 
 const nav = [
   { title: "Projects", url: "/", icon: FolderGit2, match: (p: string) => p === "/" || p.startsWith("/projects") },
@@ -48,9 +48,7 @@ export function Layout() {
             <SidebarMenuItem>
               <SidebarMenuButton size="lg" asChild>
                 <Link to="/">
-                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                    <Activity className="size-4" />
-                  </div>
+                  <img src="/favicon.svg" alt="" className="aspect-square size-8 shrink-0" />
                   <div className="grid flex-1 text-left leading-tight">
                     <span className="truncate font-semibold">Tamam</span>
                     <span className="truncate text-xs text-muted-foreground">iOS testing</span>
